@@ -31,32 +31,33 @@ class View extends DataObject {
       $fields = new FieldSet(
          new TabSet('Root',
             new Tab('Main',
-               new TextField('Name', 'Name')
+               new TextField('Name', _t('Views.Name.Label', 'Name'))
             )
          )
       );
 
       $rr = $this->ResultsRetriever();
-
-      if ($rr != null) {
+      if ($this->ID && $rr != null && get_class($rr) != 'ViewResultsRetriever') {
+         // only allow editing of actual results retriever on non-transient views
          $rr->updateCMSFields($this, $fields);
       }
 
       return $fields;
    }
 
-   /* Used by ModelAdmin to validate objects added in the CMS UI
-    */
-   public function getCMSValidator() {
-      return new RequiredFields('Name', 'ResultsRetrieverID');
-   }
-
-
    /* Used in the current configuration of the views UI */
    public function getReadOnlySummary() {
       $html .= '<strong style="font-size: 1.1em;">' . $this->Name . '</strong> <em>(' . get_class($this->ResultsRetriever()) . ')</em><br />';
       $html .= '<span style="font-size: 0.9em;">' . $this->ResultsRetriever()->getReadOnlySummary() . '</span>';
       return $html;
+   }
+
+   /* Used by ComplexTableField to validate objects added in the CMS UI
+    *
+    * @todo add a unique-per-hosting-object validation rule to "Name"
+    */
+   public function getValidator() {
+      return new RequiredFields('Name', 'ResultsRetrieverID');
    }
 
    /* Deletes the associated results retriever before deleting this view.

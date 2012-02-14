@@ -18,6 +18,10 @@
 class ViewHost extends DataObjectDecorator {
 
    /* @see DataObjectDecorator#extraStatics
+    * @todo this really isn't used since we use HostID on View for this
+    *       relationship but the HasManyComplexTableField breaks if we remove
+    *       this.  We should probably find a way to remove it and make the
+    *       field work.
     */
    function extraStatics() {
       return array(
@@ -28,8 +32,6 @@ class ViewHost extends DataObjectDecorator {
    }
 
    /* Accessor for retrieving all views attached to the owning data object.
-    *
-    * @todo why did $this->owner->Views() not work?
     */
    public function getAllViews() {
       return DataObject::get('View', '"HostID" = ' . $this->owner->ID);
@@ -124,6 +126,8 @@ class ViewHost extends DataObjectDecorator {
    /* @see DataObjectDecorator#updateCMSFields
     */
    public function updateCMSFields(FieldSet &$fields) {
+      // TODO: make this show more than 10 results (it's paginated)
+      // TODO: make this not show the checkboxes since we're limiting it to the views on this page
       $viewsTable = new HasManyComplexTableField(
          $this->owner,
          'Views',
@@ -134,7 +138,9 @@ class ViewHost extends DataObjectDecorator {
          'getCMSFields',
          sprintf('"View"."HostID" = %d', $this->owner->ID)
       );
-      $viewsTable->setAddTitle('A View');
+
+      // use our custom form for add/edit:
+      $viewsTable->popupClass = 'AddViewFormPopup';
 
       $fields->addFieldToTab('Root.Views', $viewsTable);
    }
