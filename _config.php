@@ -7,6 +7,14 @@
  * write custom query functions that can be called from the SilverStripe
  * templates (in control tags).
  *
- * This config file currently contains no configuration, but must exist for
- * SilverStripe to recognize this folder as a module.
+ * This configuration file adds the ViewHost extension to all SiteTree nodes to
+ * make this a "plug-and-play" module.  You simply drop it in your SilverStripe
+ * web root and it will be enabled on your SiteTree.
+ *
+ * NOTE: this module requires a fork of ajshort's silverstripe-itemsetfield
+ * module available at https://github.com/jthomerson/silverstripe-itemsetfield
+ * This is because there are additional features in jthomerson's itemsetfield
+ * that have not yet been merged to ajshort's original version.
  */
+
+DataObject::add_extension('SiteTree', 'ViewHost');
