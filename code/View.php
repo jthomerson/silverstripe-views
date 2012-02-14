@@ -59,6 +59,16 @@ class View extends DataObject {
       return $html;
    }
 
+   /* Deletes the associated results retriever before deleting this view.
+    *
+    * @see DataObject#onBeforeDelete()
+    */
+   protected function onBeforeDelete() {
+      parent::onBeforeDelete();
+
+      $this->ResultsRetriever()->delete();
+   }
+
    /* Used in templates to get the correct translation (if available) of
     * results retrieved by the results retriever for this view.
     *
