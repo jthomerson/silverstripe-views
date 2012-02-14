@@ -37,6 +37,16 @@ class HandPickedResultsRetriever extends ViewResultsRetriever {
       return $html;
    }
 
+   /* Deletes the associated many_many rows for hand-picked pages before
+    * deleting this results retriever.
+    *
+    * @see DataObject#onBeforeDelete()
+    */
+   protected function onBeforeDelete() {
+      parent::onBeforeDelete();
+      parent::Pages()->removeAll();
+   }
+
    /* Override the default "Pages" function built by SS to enable retrieval of
     * pages linked to this results retriever without a locale filter.  This
     * enables the hierarchy-traversal code that looks on the default locale's
