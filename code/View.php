@@ -47,7 +47,7 @@ class View extends DataObject {
 
    /* Used in the current configuration of the views UI */
    public function getReadOnlySummary() {
-      $html .= '<strong style="font-size: 1.1em;">' . $this->Name . '</strong> <em>(' . get_class($this->ResultsRetriever()) . ')</em><br />';
+      $html = '<strong style="font-size: 1.1em;">' . $this->Name . '</strong> <em>(' . get_class($this->ResultsRetriever()) . ')</em><br />';
       $html .= '<span style="font-size: 0.9em;">' . $this->ResultsRetriever()->getReadOnlySummary() . '</span>';
       return $html;
    }
